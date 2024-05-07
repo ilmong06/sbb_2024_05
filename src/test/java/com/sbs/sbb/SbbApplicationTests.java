@@ -1,5 +1,6 @@
 package com.sbs.sbb;
 
+import org.antlr.v4.runtime.misc.LogManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ class SbbApplicationTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+	private AnswerRepository answerRepository;
+
 
 	@Test
 	void testJpa() {
@@ -47,12 +50,20 @@ class SbbApplicationTests {
 				"sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
 		assertEquals(1, q.getId());*/
 
-		assertEquals(2, this.questionRepository.count());
-		Optional<Question> oq = this.questionRepository.findById(1);
+//		assertEquals(2, this.questionRepository.count());
+//		Optional<Question> oq = this.questionRepository.findById(1);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//		this.questionRepository.delete(q);
+//		assertEquals(1, this.questionRepository.count());
+		Optional<Question> oq = this.questionRepository.findById(2);
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
-		this.questionRepository.delete(q);
-		assertEquals(1, this.questionRepository.count());
 
+		Answer a = new Answer();
+		a.setContent("네 자동으로 생성됩니다.");
+		a.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a.setCreateDate(LocalDateTime.now());
+		this.answerRepository.save(a);
 	}
 }
