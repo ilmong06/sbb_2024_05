@@ -10,3 +10,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-slq: true
+    properties:
+      hibernate:
+        format_sql: true
